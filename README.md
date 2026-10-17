@@ -3,8 +3,16 @@
 Public, reproducible experiments for [issue #4852](https://github.com/ant-design-blazor/ant-design-blazor/issues/4852)
 and [PR #4855](https://github.com/ant-design-blazor/ant-design-blazor/pull/4855).
 
-This repository measures **the proposed PR as committed**, without optimizing it first.
-It does not post results to the issue or modify the PR.
+This repository preserves two experiments: the initial PR evaluation and a follow-up dictionary merger optimization.
+No issue or PR comments are posted. The optimization commit is pushed to the existing PR.
+
+## Latest: dictionary merger optimization
+
+Read [the optimization report](OPTIMIZATION.md) or [中文复测结论](OPTIMIZATION.zh-CN.md).
+The [prospective protocol](protocols/merge-optimization.md) compares PR `67486a17` against optimized PR `af1f0210`:
+**168 processes / 4,224 samples**, including equivalent-output tables and 26 microbenchmark cases.
+[Raw evidence, full statistics and checksums](results/windows-net10-optimization-run2/) include gains and regressions.
+Reproduction commands are in the optimization reports. The sections below describe the original experiment.
 
 ## Fixed source revisions
 
@@ -80,7 +88,8 @@ The completed run contains **144 processes / 3,168 samples**. Read the [English 
 All raw JSONL, environment manifests, flattened samples and full statistics are under [results/windows-net10-run1](results/windows-net10-run1/).
 The paired effect estimate is not the ratio of the unpaired/global medians in the full summary.
 Run `python scripts/verify.py results/windows-net10-run1` to check process/sample completeness and no-attribute render-work equality.
-No credentials, computer name, home paths, private data or build logs are published. CPU model, runtime/OS versions and power plan are recorded.
+No credentials, computer name, home paths or private data are published. CPU model, runtime/OS versions and power plan are recorded.
+The follow-up optimization also publishes validation logs with local paths replaced.
 
 ## License
 

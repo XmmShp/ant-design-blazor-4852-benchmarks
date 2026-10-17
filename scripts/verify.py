@@ -13,11 +13,13 @@ actual = {p.name for p in root.glob('*.jsonl')}
 assert actual == expected, f'Missing {expected - actual}; unexpected {actual - expected}'
 count = 0
 hashes = {'baseline': set(), 'candidate': set()}
+environments = set()
 no_attribute_work = {}
 for name in sorted(expected):
     rows = [json.loads(line) for line in (root / name).read_text(encoding='utf-8-sig').splitlines()]
     assert rows[0]['kind'] == 'environment', name
     environment = rows[0]
+    environments.add(tuple(environment[k] for k in ['runtime', 'os', 'architecture', 'logicalProcessors', 'serverGc']))
     hashes[environment['version']].add(environment['librarySha256'])
     assert environment['tieredCompilation'] == '0' and environment['readyToRun'] == '0', name
     samples = rows[1:]
@@ -44,5 +46,6 @@ for name, work in no_attribute_work.items():
         assert work == no_attribute_work[name[:-7] + 'b.jsonl'], f'Different rendering work: {name}'
 assert all(len(values) == 1 for values in hashes.values()), hashes
 assert hashes['baseline'] != hashes['candidate'], 'Different library binaries must be loaded'
+assert len(environments) == 1, 'Runtime/OS/architecture/GC configuration changed within the run'
 print(json.dumps({'verifiedProcesses': len(expected), 'verifiedSamples': count,
                   'pairs': manifest['pairs'], 'librarySha256': {k: list(v)[0] for k, v in hashes.items()}}, indent=2))

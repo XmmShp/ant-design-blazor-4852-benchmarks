@@ -1,0 +1,41 @@
+{
+  "baseline": "67486a17c31bab00665b617919b7ac99ad218468",
+  "schema": 1,
+  "only": "all",
+  "cpu": {
+    "Name": "12th Gen Intel(R) Core(TM) i7-12700F",
+    "NumberOfCores": 12,
+    "NumberOfLogicalProcessors": 20
+  },
+  "harnessCommit": "203ee86a7874a432e039e47174f4ea5a5536926d",
+  "processIsolation": "new sequential process per arm per pair",
+  "seed": 4852,
+  "powerScheme": "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)",
+  "candidate": "af1f0210fb3a15c16f58f5c0349ba415d3a05dd3",
+  "samplesPerProcess": 4,
+  "sdk": "10.0.103",
+  "warmupsPerProcess": 3,
+  "pairs": 12,
+  "definitionFile": "protocols/merge-optimization.json",
+  "microScenarioCount": 26,
+  "startedUtc": "2026-10-17T05:45:04.1277713+00:00",
+  "cases": [
+    "none-100x10",
+    "none-1000x10",
+    "none-2000x20",
+    "legacy-1000x10",
+    "both-1000x10",
+    "merge-1000x10",
+    "micro"
+  ],
+  "affinity": "OS default; no affinity pinning",
+  "tieredCompilation": 0,
+  "readyToRun": 0,
+  "equivalentWorkCases": [
+    "none-100x10",
+    "none-1000x10",
+    "none-2000x20",
+    "legacy-1000x10",
+    "both-1000x10"
+  ]
+}
