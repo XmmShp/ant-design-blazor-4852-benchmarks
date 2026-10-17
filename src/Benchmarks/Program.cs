@@ -39,7 +39,7 @@ internal static class Program
         writer.WriteLine(JsonSerializer.Serialize(metadata));
         if (mode == "merge")
         {
-            MergeBenchmarks.Run(writer, version, samples, warmups);
+            MergeBenchmarks.Run(writer, version, samples, warmups, bool.Parse(Get("empty-cases", "false")));
             return;
         }
 
@@ -262,24 +262,26 @@ internal static class MergeBenchmarks
     private delegate IReadOnlyDictionary<string, object>? Merger(AntDomComponentBase component, IReadOnlyDictionary<string, object>? legacy);
     private static object? _sink;
 
-    public static void Run(StreamWriter writer, string version, int samples, int warmups)
+    public static void Run(StreamWriter writer, string version, int samples, int warmups, bool extendedEmptyCases)
     {
         var method = typeof(AntDomComponentBase).GetMethod("GetAdditionalAttributes", BindingFlags.Instance | BindingFlags.NonPublic);
         var merge = method == null ? LegacyPath : method.CreateDelegate<Merger>();
         var property = typeof(AntDomComponentBase).GetProperty("AdditionalAttributes");
         foreach (var size in new[] { 0, 1, 4, 8, 16 })
-        foreach (var scenario in size == 0 ? new[] { "both-null", "both-empty" } : new[] { "legacy-only", "shared-only", "both-disjoint", "both-overlap" })
+        foreach (var scenario in size == 0 ? new[] { "both-null", "both-empty" }
+            : extendedEmptyCases ? new[] { "legacy-only", "shared-only", "both-disjoint", "both-overlap", "legacy-empty", "shared-empty" }
+            : new[] { "legacy-only", "shared-only", "both-disjoint", "both-overlap" })
         {
             var probe = new Probe();
             Dictionary<string, object>? shared = scenario == "both-null" || scenario == "legacy-only" ? null : new();
             Dictionary<string, object>? legacy = scenario == "both-null" || scenario == "shared-only" ? null : new();
             for (var i = 0; i < size; i++)
             {
-                if (shared != null) shared[$"data-shared-{i}"] = "shared";
-                if (legacy != null) legacy[scenario == "both-overlap" ? $"data-shared-{i}" : $"data-legacy-{i}"] = "legacy";
+                if (shared != null && scenario != "shared-empty") shared[$"data-shared-{i}"] = "shared";
+                if (legacy != null && scenario != "legacy-empty") legacy[scenario == "both-overlap" ? $"data-shared-{i}" : $"data-legacy-{i}"] = "legacy";
             }
             property?.SetValue(probe, shared);
-            var operations = scenario.StartsWith("both-") && scenario != "both-null" ? 100_000 : 2_000_000;
+            var operations = shared != null && legacy != null ? 100_000 : 2_000_000;
             for (var warmup = 0; warmup < warmups; warmup++) Loop(merge, probe, legacy, operations);
             for (var sample = 0; sample < samples; sample++)
             {

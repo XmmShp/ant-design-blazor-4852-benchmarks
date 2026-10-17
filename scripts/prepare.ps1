@@ -1,9 +1,17 @@
-param([string]$SourceRepository = 'https://github.com/XmmShp/ant-design-blazor.git')
+param(
+    [string]$SourceRepository = 'https://github.com/XmmShp/ant-design-blazor.git',
+    [string]$DefinitionFile = ''
+)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $versions = [ordered]@{
     baseline = '943f6af77201ba1ebfd4756c054ff838d8bef0d0'
     candidate = '67486a17c31bab00665b617919b7ac99ad218468'
+}
+if ($DefinitionFile) {
+    $definition = Get-Content (Join-Path $root $DefinitionFile) -Raw | ConvertFrom-Json -AsHashtable
+    $versions.baseline = $definition.baseline
+    $versions.candidate = $definition.candidate
 }
 New-Item -ItemType Directory -Force "$root/artifacts", "$root/sources" | Out-Null
 if (Test-Path -LiteralPath $SourceRepository) { $gitSource = (Resolve-Path $SourceRepository).Path }
@@ -12,6 +20,10 @@ else {
     if (!(Test-Path "$gitSource/HEAD")) {
         git clone --bare $SourceRepository $gitSource
         if ($LASTEXITCODE) { throw 'Source clone failed' }
+    }
+    if ($DefinitionFile) {
+        git -C $gitSource fetch origin
+        if ($LASTEXITCODE) { throw 'Source fetch failed' }
     }
 }
 foreach ($version in $versions.Keys) {

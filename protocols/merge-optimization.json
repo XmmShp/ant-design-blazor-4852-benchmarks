@@ -1,0 +1,15 @@
+{
+  "baseline": "67486a17c31bab00665b617919b7ac99ad218468",
+  "candidate": "af1f0210fb3a15c16f58f5c0349ba415d3a05dd3",
+  "extendedEmptyCases": true,
+  "equivalentWorkCases": ["none-100x10", "none-1000x10", "none-2000x20", "legacy-1000x10", "both-1000x10"],
+  "cases": [
+    {"id":"none-100x10", "rows":100, "cols":10, "a":"baseline", "b":"candidate", "modeA":"none", "modeB":"none"},
+    {"id":"none-1000x10", "rows":1000, "cols":10, "a":"baseline", "b":"candidate", "modeA":"none", "modeB":"none"},
+    {"id":"none-2000x20", "rows":2000, "cols":20, "a":"baseline", "b":"candidate", "modeA":"none", "modeB":"none"},
+    {"id":"legacy-1000x10", "rows":1000, "cols":10, "a":"baseline", "b":"candidate", "modeA":"legacy", "modeB":"legacy"},
+    {"id":"both-1000x10", "rows":1000, "cols":10, "a":"baseline", "b":"candidate", "modeA":"both", "modeB":"both"},
+    {"id":"merge-1000x10", "rows":1000, "cols":10, "a":"candidate", "b":"candidate", "modeA":"legacy", "modeB":"both"},
+    {"id":"micro", "rows":0, "cols":0, "a":"baseline", "b":"candidate", "modeA":"merge", "modeB":"merge"}
+  ]
+}

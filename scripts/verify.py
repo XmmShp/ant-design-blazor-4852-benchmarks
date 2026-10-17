@@ -5,7 +5,8 @@ import sys
 
 root = Path(sys.argv[1])
 manifest = json.loads((root / 'manifest-all.json').read_text(encoding='utf-8-sig'))
-cases = {'none-100x10', 'none-1000x10', 'none-2000x20', 'legacy-1000x10', 'merge-1000x10', 'micro'}
+cases = set(manifest.get('cases', ['none-100x10', 'none-1000x10', 'none-2000x20', 'legacy-1000x10', 'merge-1000x10', 'micro']))
+equivalent_work_cases = set(manifest.get('equivalentWorkCases', [c for c in cases if c.startswith('none-')]))
 expected = {f'{case}-pair{pair:02d}-{arm}.jsonl' for case in cases
             for pair in range(manifest['pairs']) for arm in ['a', 'b']}
 actual = {p.name for p in root.glob('*.jsonl')}
@@ -21,7 +22,7 @@ for name in sorted(expected):
     assert environment['tieredCompilation'] == '0' and environment['readyToRun'] == '0', name
     samples = rows[1:]
     assert all(r['kind'] == 'sample' for r in samples), name
-    assert len(samples) == manifest['samplesPerProcess'] * (18 if name.startswith('micro-') else 3), name
+    assert len(samples) == manifest['samplesPerProcess'] * (manifest.get('microScenarioCount', 18) if name.startswith('micro-') else 3), name
     identities = {(r['operation'], r.get('scenario'), r.get('size'), r['sample']) for r in samples}
     assert len(identities) == len(samples), name
     for row in samples:
@@ -36,7 +37,7 @@ for name in sorted(expected):
         if row['operation'] == 'changed-data-update':
             assert row['edits'] > 0, name
     count += len(samples)
-    if name.startswith('none-'):
+    if name.split('-pair')[0] in equivalent_work_cases:
         no_attribute_work[name] = [tuple(r[k] for k in ['operation', 'batches', 'updatedComponents', 'edits']) for r in samples]
 for name, work in no_attribute_work.items():
     if name.endswith('-a.jsonl'):
