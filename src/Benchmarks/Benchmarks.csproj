@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);BL0006;ASP0006</NoWarn>
+    <AntDesignSource Condition="'$(AntDesignSource)'==''">../../sources/candidate/components/AntDesign.csproj</AntDesignSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="$(AntDesignSource)" />
+  </ItemGroup>
+</Project>

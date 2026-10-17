@@ -1,0 +1,5 @@
+artifacts/
+sources/
+**/bin/
+**/obj/
+__pycache__/
