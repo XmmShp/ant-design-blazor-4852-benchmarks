@@ -3,10 +3,17 @@
 Public, reproducible experiments for [issue #4852](https://github.com/ant-design-blazor/ant-design-blazor/issues/4852)
 and [PR #4855](https://github.com/ant-design-blazor/ant-design-blazor/pull/4855).
 
-This repository preserves the initial PR evaluation and two successive dictionary merger optimizations.
+This repository preserves the initial PR evaluation, two successive dictionary merger optimizations, and a direct final-vs-pre-PR comparison.
 No issue or PR comments are posted. The optimization commit is pushed to the existing PR.
 
-## Latest: capacity strategy and single-input fast paths
+## Latest: direct final PR vs pre-PR baseline
+
+Read [the direct comparison report](FINAL.md) or [中文最终版直接对比](FINAL.zh-CN.md).
+The [prospective protocol](protocols/final-vs-baseline.md) directly compares pre-PR `943f6af7` with final `2b1cafd5`:
+**168 processes / 4,224 samples**, retaining the same fixtures and measurement/analysis methods.
+[Raw evidence, statistics and checksums](results/windows-net10-final-vs-baseline-run4/) distinguish equivalent-output default-path comparisons from enabled-feature costs.
+
+## Previous: capacity strategy and single-input fast paths
 
 Read [the capacity follow-up report](CAPACITY.md) or [中文容量复测结论](CAPACITY.zh-CN.md).
 The [prospective protocol](protocols/capacity-optimization.md) compares previous optimization `af1f021` against `2b1cafd` using the same seven cases and 26 micro scenarios:
