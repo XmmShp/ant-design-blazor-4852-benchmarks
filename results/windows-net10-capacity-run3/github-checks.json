@@ -1,0 +1,47 @@
+{
+  "checkedUtc": "2026-10-17T07:10:27.6653535+00:00",
+  "commit": "2b1cafd50978e1622b68c45aba7ca572506aa5d4",
+  "failureAnnotations": [
+    {
+      "check": "start preview info",
+      "annotations": [
+        {
+          "annotation_level": "failure",
+          "message": "Repository access blocked",
+          "path": ".github"
+        },
+        {
+          "annotation_level": "notice",
+          "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+          "path": ".github"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "license/cla",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ant-design-blazor/ant-design-blazor/runs/117331295727"
+    },
+    {
+      "name": "build preview",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/ant-design-blazor/ant-design-blazor/actions/runs/39010266153/job/117331135865"
+    },
+    {
+      "name": "build",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/ant-design-blazor/ant-design-blazor/actions/runs/39010266061/job/117331135419"
+    },
+    {
+      "name": "start preview info",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/ant-design-blazor/ant-design-blazor/actions/runs/39010263980/job/117331130730"
+    }
+  ]
+}

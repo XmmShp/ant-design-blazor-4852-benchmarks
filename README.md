@@ -3,10 +3,17 @@
 Public, reproducible experiments for [issue #4852](https://github.com/ant-design-blazor/ant-design-blazor/issues/4852)
 and [PR #4855](https://github.com/ant-design-blazor/ant-design-blazor/pull/4855).
 
-This repository preserves two experiments: the initial PR evaluation and a follow-up dictionary merger optimization.
+This repository preserves the initial PR evaluation and two successive dictionary merger optimizations.
 No issue or PR comments are posted. The optimization commit is pushed to the existing PR.
 
-## Latest: dictionary merger optimization
+## Latest: capacity strategy and single-input fast paths
+
+Read [the capacity follow-up report](CAPACITY.md) or [中文容量复测结论](CAPACITY.zh-CN.md).
+The [prospective protocol](protocols/capacity-optimization.md) compares previous optimization `af1f021` against `2b1cafd` using the same seven cases and 26 micro scenarios:
+**168 formal processes / 4,224 samples**, plus all disclosed exploratory pilots.
+[Raw evidence, statistics and checksums](results/windows-net10-capacity-run3/) retain every scheduled sample and remaining tradeoff.
+
+## Previous: dictionary merger optimization
 
 Read [the optimization report](OPTIMIZATION.md) or [中文复测结论](OPTIMIZATION.zh-CN.md).
 The [prospective protocol](protocols/merge-optimization.md) compares PR `67486a17` against optimized PR `af1f0210`:

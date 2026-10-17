@@ -1,0 +1,13 @@
+{
+  "verifiedProcesses": 12,
+  "verifiedSamples": 1248,
+  "pairsPerPilot": 3,
+  "scenariosPerProcess": 26,
+  "samplesPerScenario": 4,
+  "librarySha256": {
+    "capacity-pilot/new": "57423E3B357FED49E4731FCCE8636AED8E189150067B591B927FE3CAD6926415",
+    "capacity-pilot/old": "855E2D3AB56372EBA72A62C3F0F9B5178746A2F27542E3020812902D62DCC4C2",
+    "capacity-v2-pilot/new": "2738140127125EB3A9A36A72CE9578EE97842D7D93D1C861C5A5AAC7E143A6F2",
+    "capacity-v2-pilot/old": "855E2D3AB56372EBA72A62C3F0F9B5178746A2F27542E3020812902D62DCC4C2"
+  }
+}

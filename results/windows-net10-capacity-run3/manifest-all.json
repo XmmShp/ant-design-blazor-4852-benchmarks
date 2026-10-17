@@ -1,0 +1,41 @@
+{
+  "affinity": "OS default; no affinity pinning",
+  "definitionFile": "protocols/capacity-optimization.json",
+  "tieredCompilation": 0,
+  "candidate": "2b1cafd50978e1622b68c45aba7ca572506aa5d4",
+  "cases": [
+    "none-100x10",
+    "none-1000x10",
+    "none-2000x20",
+    "legacy-1000x10",
+    "both-1000x10",
+    "merge-1000x10",
+    "micro"
+  ],
+  "equivalentWorkCases": [
+    "none-100x10",
+    "none-1000x10",
+    "none-2000x20",
+    "legacy-1000x10",
+    "both-1000x10"
+  ],
+  "cpu": {
+    "Name": "12th Gen Intel(R) Core(TM) i7-12700F",
+    "NumberOfCores": 12,
+    "NumberOfLogicalProcessors": 20
+  },
+  "sdk": "10.0.103",
+  "startedUtc": "2026-10-17T06:33:05.1757484+00:00",
+  "seed": 4852,
+  "only": "all",
+  "powerScheme": "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)",
+  "microScenarioCount": 26,
+  "processIsolation": "new sequential process per arm per pair",
+  "samplesPerProcess": 4,
+  "pairs": 12,
+  "harnessCommit": "ab4afd14b45fa03292af923b0d8c0de6bb9f7c29",
+  "warmupsPerProcess": 3,
+  "schema": 1,
+  "baseline": "af1f0210fb3a15c16f58f5c0349ba415d3a05dd3",
+  "readyToRun": 0
+}
