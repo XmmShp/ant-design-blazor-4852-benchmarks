@@ -1,3 +1,5 @@
 * text=auto eol=lf
 # Evidence checksums describe the original on-disk bytes, including raw newlines.
 results/** -text
+# Patch context lines intentionally contain a single space on blank lines.
+experiments/*.patch -whitespace
