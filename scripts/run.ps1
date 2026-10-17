@@ -36,7 +36,7 @@ $manifest = @{
 }
 $manifest | ConvertTo-Json -Depth 6 | Set-Content "$output/manifest-$Only.json" -Encoding utf8
 for ($pair = 0; $pair -lt $Pairs; $pair++) {
-    # Shuffle case order in each block; alternate A/B ordering in balanced random
+    # Shuffle case order in each block; alternate A/B ordering in balanced
     # two-block groups so the second version is not always warmer or cooler.
     $ordered = @($cases | Sort-Object { $rng.Next() })
     foreach ($case in $ordered) {

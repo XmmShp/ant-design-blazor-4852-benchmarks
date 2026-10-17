@@ -1,0 +1,23 @@
+{
+  "harnessCommit": "89b61901893f156ce18a0cccfd2048f3b5fe5c61",
+  "samplesPerProcess": 4,
+  "processIsolation": "new sequential process per arm per pair",
+  "seed": 4852,
+  "readyToRun": 0,
+  "startedUtc": "2026-10-17T05:06:26.1027657+00:00",
+  "warmupsPerProcess": 3,
+  "sdk": "10.0.103",
+  "candidate": "67486a17c31bab00665b617919b7ac99ad218468",
+  "baseline": "943f6af77201ba1ebfd4756c054ff838d8bef0d0",
+  "only": "all",
+  "pairs": 12,
+  "affinity": "OS default; no affinity pinning",
+  "tieredCompilation": 0,
+  "powerScheme": "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)",
+  "cpu": {
+    "Name": "12th Gen Intel(R) Core(TM) i7-12700F",
+    "NumberOfCores": 12,
+    "NumberOfLogicalProcessors": 20
+  },
+  "schema": 1
+}

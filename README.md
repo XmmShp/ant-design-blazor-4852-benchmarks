@@ -76,7 +76,10 @@ Absolute timings include the table library's existing initialization/render over
 
 ## Results
 
-Raw per-process JSONL, environment manifests, flattened samples, analysis and conclusions are published under `results/` after the run.
+The completed run contains **144 processes / 3,168 samples**. Read the [English report](REPORT.md) or [中文结论](REPORT.zh-CN.md).
+All raw JSONL, environment manifests, flattened samples and full statistics are under [results/windows-net10-run1](results/windows-net10-run1/).
+The paired effect estimate is not the ratio of the unpaired/global medians in the full summary.
+Run `python scripts/verify.py results/windows-net10-run1` to check process/sample completeness and no-attribute render-work equality.
 No credentials, computer name, home paths, private data or build logs are published. CPU model, runtime/OS versions and power plan are recorded.
 
 ## License
