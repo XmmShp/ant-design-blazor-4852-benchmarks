@@ -43,6 +43,7 @@ $power = if ($IsWindows) { (powercfg /getactivescheme | Out-String).Trim() } els
 $manifest = @{
     schema=1; harnessCommit=(git -C $root rev-parse HEAD); startedUtc=[DateTimeOffset]::UtcNow.ToString('o');
     baseline=$baselineCommit; candidate=$candidateCommit;
+    sourceVariants=$definition.sourceVariants;
     definitionFile=$DefinitionFile; cases=@($cases | ForEach-Object { $_.id });
     microScenarioCount=$(if ($extendedEmptyCases) { 26 } else { 18 });
     equivalentWorkCases=$equivalentWorkCases;

@@ -29,12 +29,17 @@ else {
 foreach ($version in $versions.Keys) {
     # Distinct revisions must never reuse compiler/Razor caches: archive timestamps
     # can be older than outputs from a previous experiment.
-    $target = "$root/sources/$version-$($versions[$version])"
+    $suffix = if ($definition.sourceVariants) { "-capture-isolation" } else { "" }
+    $target = "$root/sources/$version-$($versions[$version])$suffix"
     New-Item -ItemType Directory -Force $target | Out-Null
     git -C $gitSource archive --format=tar --output="$root/artifacts/$version.tar" $versions[$version] components Directory.Build.props README.md LICENSE
     if ($LASTEXITCODE) { throw 'Source archive failed' }
     tar -xf "$root/artifacts/$version.tar" -C $target
     if ($LASTEXITCODE) { throw 'Source extraction failed' }
+    if ($definition.sourceVariants) {
+        python "$root/scripts/apply-capture-variant.py" $target $version "$root/artifacts/$version-source-audit.json"
+        if ($LASTEXITCODE) { throw 'Variant audit failed' }
+    }
     $project = (Resolve-Path "$target/components/AntDesign.csproj").Path
     New-Item -ItemType Directory -Force "$root/artifacts/harness-$version" | Out-Null
     Copy-Item "$root/src/Benchmarks/*" "$root/artifacts/harness-$version/" -Recurse -Force

@@ -1,0 +1,41 @@
+{
+  "readyToRun": 0,
+  "harnessCommit": "df01d34787fe3ce4f6a1226634949b62317cb2b0",
+  "microScenarioCount": 26,
+  "definitionFile": "protocols/capture-preflight.json",
+  "affinity": "OS default; no affinity pinning",
+  "processIsolation": "new sequential process per arm per pair",
+  "cpu": {
+    "Name": "12th Gen Intel(R) Core(TM) i7-12700F",
+    "NumberOfCores": 12,
+    "NumberOfLogicalProcessors": 20
+  },
+  "samplesPerProcess": 1,
+  "pairs": 1,
+  "seed": 4852,
+  "cases": [
+    "none-100x10",
+    "legacy-100x10",
+    "shared-100x10",
+    "both-100x10"
+  ],
+  "only": "all",
+  "candidate": "2b1cafd50978e1622b68c45aba7ca572506aa5d4",
+  "tieredCompilation": 0,
+  "warmupsPerProcess": 1,
+  "baseline": "2b1cafd50978e1622b68c45aba7ca572506aa5d4",
+  "sourceVariants": {
+    "baseline": false,
+    "candidate": true
+  },
+  "powerScheme": "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)",
+  "equivalentWorkCases": [
+    "none-100x10",
+    "legacy-100x10",
+    "shared-100x10",
+    "both-100x10"
+  ],
+  "sdk": "10.0.103",
+  "schema": 1,
+  "startedUtc": "2026-10-20T05:11:52.2337779+00:00"
+}

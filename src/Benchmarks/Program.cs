@@ -32,6 +32,8 @@ internal static class Program
             tieredCompilation = Environment.GetEnvironmentVariable("DOTNET_TieredCompilation"),
             readyToRun = Environment.GetEnvironmentVariable("DOTNET_ReadyToRun"),
             startedUtc = DateTimeOffset.UtcNow, stopwatchFrequency = Stopwatch.Frequency,
+            captureUnmatchedValues = typeof(AntDomComponentBase).GetProperty("AdditionalAttributes")?
+                .GetCustomAttribute<ParameterAttribute>()?.CaptureUnmatchedValues,
             librarySha256 = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(
                 File.ReadAllBytes(typeof(AntDomComponentBase).Assembly.Location)))
         };
@@ -82,6 +84,7 @@ internal static class Program
             void Write(string operation, Measurement result) => writer.WriteLine(JsonSerializer.Serialize(new
             {
                 kind = "sample", version, operation, rows, columns, cellMode, sample,
+                outputSha256 = session.OutputSha256,
                 validatedCells = rows * columns, validatedHeaders = columns,
                 result.elapsedNs, result.allocatedBytes, result.gen0, result.gen1, result.gen2,
                 result.batches, result.updatedComponents, result.edits
@@ -126,6 +129,7 @@ internal sealed class TableSession : IAsyncDisposable
     private readonly Dictionary<string, object?> _parameters;
     private readonly string _cellMode;
     private int _rootId;
+    public string OutputSha256 { get; private set; } = "";
 
     private static readonly Dictionary<string, object> LegacyAttributes = new()
     {
@@ -150,7 +154,7 @@ internal sealed class TableSession : IAsyncDisposable
                 builder.AddAttribute(2, "Field", row.Values[col]);
                 if (cellMode is "legacy" or "both")
                     builder.AddAttribute(3, "OnCell", (Func<AntDesign.TableModels.CellData, Dictionary<string, object>>)(_ => LegacyAttributes));
-                if (cellMode == "both")
+                if (cellMode is "shared" or "both")
                     builder.AddAttribute(4, "AdditionalAttributes", SharedAttributes);
                 builder.CloseComponent();
             }
@@ -182,11 +186,12 @@ internal sealed class TableSession : IAsyncDisposable
     public Task Validate(int rows, int columns, string? expectedText = null) => Renderer.Dispatcher.InvokeAsync(() =>
     {
         var snapshot = Renderer.Inspect(_rootId);
+        OutputSha256 = Renderer.OutputHash(_rootId);
         if (snapshot.Cells != rows * columns || snapshot.Headers != columns)
             throw new InvalidOperationException($"Expected {rows * columns} cells/{columns} headers; got {snapshot}.");
         if (expectedText != null && !snapshot.Text.Contains(expectedText))
             throw new InvalidOperationException($"Update was skipped: missing {expectedText}.");
-        var expectedShared = _cellMode == "both" ? rows * columns + columns : 0;
+        var expectedShared = _cellMode is "shared" or "both" ? rows * columns + columns : 0;
         if (snapshot.Shared != expectedShared)
             throw new InvalidOperationException($"Expected {expectedShared} shared attributes; got {snapshot.Shared}.");
     });
@@ -214,6 +219,47 @@ internal sealed class HeadlessRenderer : Renderer
         UpdatedComponents += batch.UpdatedComponents.Count;
         for (var i = 0; i < batch.UpdatedComponents.Count; i++) Edits += batch.UpdatedComponents.Array[i].Edits.Count;
         return Task.CompletedTask;
+    }
+
+    // Native output only; component parameter frames and runtime event handler IDs are not DOM.
+    // Delegate values are represented by their type. All scalar attribute values are retained.
+    public string OutputHash(int root)
+    {
+        var tokens = new List<string?>();
+        void Visit(int id)
+        {
+            var frames = GetCurrentRenderTreeFrames(id);
+            Walk(frames.Array, 0, frames.Count);
+        }
+        void Walk(RenderTreeFrame[] frames, int start, int end)
+        {
+            for (var i = start; i < end; i++)
+            {
+                var f = frames[i];
+                switch (f.FrameType)
+                {
+                    case RenderTreeFrameType.Component:
+                        Visit(f.ComponentId); i += f.ComponentSubtreeLength - 1; break;
+                    case RenderTreeFrameType.Element:
+                        tokens.Add("element"); tokens.Add(f.ElementName);
+                        Walk(frames, i + 1, i + f.ElementSubtreeLength);
+                        tokens.Add("end"); i += f.ElementSubtreeLength - 1; break;
+                    case RenderTreeFrameType.Region:
+                        Walk(frames, i + 1, i + f.RegionSubtreeLength);
+                        i += f.RegionSubtreeLength - 1; break;
+                    case RenderTreeFrameType.Attribute:
+                        tokens.Add("attribute"); tokens.Add(f.AttributeName);
+                        tokens.Add(f.AttributeValue is Delegate d ? d.GetType().FullName :
+                            Convert.ToString(f.AttributeValue, System.Globalization.CultureInfo.InvariantCulture));
+                        break;
+                    case RenderTreeFrameType.Text: tokens.Add("text"); tokens.Add(f.TextContent); break;
+                    case RenderTreeFrameType.Markup: tokens.Add("markup"); tokens.Add(f.MarkupContent); break;
+                }
+            }
+        }
+        Visit(root);
+        return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(
+            JsonSerializer.SerializeToUtf8Bytes(tokens)));
     }
 
     public Snapshot Inspect(int root)

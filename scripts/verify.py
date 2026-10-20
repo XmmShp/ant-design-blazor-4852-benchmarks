@@ -22,6 +22,8 @@ for name in sorted(expected):
     environments.add(tuple(environment[k] for k in ['runtime', 'os', 'architecture', 'logicalProcessors', 'serverGc']))
     hashes[environment['version']].add(environment['librarySha256'])
     assert environment['tieredCompilation'] == '0' and environment['readyToRun'] == '0', name
+    if manifest.get('sourceVariants'):
+        assert environment['captureUnmatchedValues'] == manifest['sourceVariants'][environment['version']], name
     samples = rows[1:]
     assert all(r['kind'] == 'sample' for r in samples), name
     assert len(samples) == manifest['samplesPerProcess'] * (manifest.get('microScenarioCount', 18) if name.startswith('micro-') else 3), name
@@ -40,7 +42,7 @@ for name in sorted(expected):
             assert row['edits'] > 0, name
     count += len(samples)
     if name.split('-pair')[0] in equivalent_work_cases:
-        no_attribute_work[name] = [tuple(r[k] for k in ['operation', 'batches', 'updatedComponents', 'edits']) for r in samples]
+        no_attribute_work[name] = [tuple(r[k] for k in (['operation', 'batches', 'updatedComponents', 'edits', 'outputSha256'] if manifest.get('sourceVariants') else ['operation', 'batches', 'updatedComponents', 'edits'])) for r in samples]
 for name, work in no_attribute_work.items():
     if name.endswith('-a.jsonl'):
         assert work == no_attribute_work[name[:-7] + 'b.jsonl'], f'Different rendering work: {name}'
