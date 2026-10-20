@@ -1,0 +1,13 @@
+{
+  "archivedFiles": 1204,
+  "archiveSha256": {
+    "baseline": "945a85bd8408ee458851d98f81a16d7fe5df17b0b9806f1188a25adfb79dc6f1",
+    "candidate": "945a85bd8408ee458851d98f81a16d7fe5df17b0b9806f1188a25adfb79dc6f1"
+  },
+  "identicalOriginalArchives": true,
+  "changedFiles": [
+    "components/core/Base/AntDomComponentBase.cs"
+  ],
+  "onlyReplacement": "CaptureUnmatchedValues = true -> false (baseline only)",
+  "sourceCommit": "2b1cafd50978e1622b68c45aba7ca572506aa5d4"
+}

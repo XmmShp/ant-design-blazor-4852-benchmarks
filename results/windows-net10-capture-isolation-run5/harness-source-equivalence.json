@@ -1,0 +1,10 @@
+{
+  "Program.cs": {
+    "baseline": "1e88792dc2d105fd97ae17bfeebdf1158813df0e7636d1c253a327c49b21cb1e",
+    "candidate": "1e88792dc2d105fd97ae17bfeebdf1158813df0e7636d1c253a327c49b21cb1e"
+  },
+  "Benchmarks.csproj": {
+    "baseline": "5a2009fefabb8914c2c63745d8c9f8ee1ae72a461667f372dfac6a8ec22e8cc3",
+    "candidate": "5a2009fefabb8914c2c63745d8c9f8ee1ae72a461667f372dfac6a8ec22e8cc3"
+  }
+}

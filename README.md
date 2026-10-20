@@ -3,10 +3,19 @@
 Public, reproducible experiments for [issue #4852](https://github.com/ant-design-blazor/ant-design-blazor/issues/4852)
 and [PR #4855](https://github.com/ant-design-blazor/ant-design-blazor/pull/4855).
 
-This repository preserves the initial PR evaluation, two successive dictionary merger optimizations, and a direct final-vs-pre-PR comparison.
-No issue or PR comments are posted. The optimization commit is pushed to the existing PR.
+This repository preserves the initial PR evaluation, two successive dictionary merger optimizations, a direct final-vs-pre-PR comparison, and an isolated capture-flag experiment.
+The latest study changes only archived benchmark sources; the production PR stays at `2b1cafd5`. It does not post issue/PR comments.
 
-## Latest: direct final PR vs pre-PR baseline
+## Latest: isolated CaptureUnmatchedValues flag
+
+Read [the isolation report](CAPTURE.md) or [中文开关隔离测试](CAPTURE.zh-CN.md).
+Both arms use final `2b1cafd5`; A changes only `CaptureUnmatchedValues` to false, B retains true.
+Default large tables and explicit dictionary cases have identical parameters and verified native output.
+**168 formal processes / 4,224 samples**, plus separate correctness preflight.
+[Prospective protocol](protocols/capture-isolation.md) / [one-line patch](experiments/capture-disabled.patch) /
+[raw evidence, source audits, statistics and checksums](results/windows-net10-capture-isolation-run5/).
+
+## Previous: direct final PR vs pre-PR baseline
 
 Read [the direct comparison report](FINAL.md) or [中文最终版直接对比](FINAL.zh-CN.md).
 The [prospective protocol](protocols/final-vs-baseline.md) directly compares pre-PR `943f6af7` with final `2b1cafd5`:
@@ -28,7 +37,7 @@ The [prospective protocol](protocols/merge-optimization.md) compares PR `67486a1
 [Raw evidence, full statistics and checksums](results/windows-net10-optimization-run2/) include gains and regressions.
 Reproduction commands are in the optimization reports. The sections below describe the original experiment.
 
-## Fixed source revisions
+## Original experiment: fixed source revisions
 
 | Arm | Commit |
 | --- | --- |

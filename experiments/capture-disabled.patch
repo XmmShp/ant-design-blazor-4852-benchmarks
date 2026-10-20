@@ -1,0 +1,11 @@
+--- a/components/core/Base/AntDomComponentBase.cs
++++ b/components/core/Base/AntDomComponentBase.cs
+@@ -13,7 +13,7 @@
+         /// Additional HTML attributes for the component's DOM target. See the arbitrary
+         /// attributes documentation for composite components and attribute precedence.
+         /// </summary>
+-        [Parameter(CaptureUnmatchedValues = true)]
++        [Parameter(CaptureUnmatchedValues = false)]
+         public IReadOnlyDictionary<string, object> AdditionalAttributes { get; set; }
+ 
+         // Existing named attribute dictionaries remain supported. Their values take
